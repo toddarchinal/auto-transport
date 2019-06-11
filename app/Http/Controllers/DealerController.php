@@ -14,17 +14,9 @@ class DealerController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $dealer = Dealer::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($dealer);
     }
 
     /**
@@ -35,7 +27,16 @@ class DealerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $dealer = Dealer::create($request->all());
+
+        return response()->json([
+            'message' => "Success, New dealer added",
+            'dealer' => $dealer
+        ]);
     }
 
     /**
@@ -46,18 +47,7 @@ class DealerController extends Controller
      */
     public function show(Dealer $dealer)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Dealer  $dealer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Dealer $dealer)
-    {
-        //
+        return $dealer;
     }
 
     /**
@@ -69,7 +59,17 @@ class DealerController extends Controller
      */
     public function update(Request $request, Dealer $dealer)
     {
-        //
+        $request->validate([
+            'name'       => 'nullable',
+            //'description' => 'nullable'
+         ]);
+
+         $dealer->update($request->all());
+
+         return response()->json([
+             'message' => 'Great success! Dealer updated',
+             'dealer' => $dealer
+         ]);
     }
 
     /**
@@ -80,6 +80,10 @@ class DealerController extends Controller
      */
     public function destroy(Dealer $dealer)
     {
-        //
+        $dealer->delete();
+
+        return response()->json([
+            'message' => 'Successfully deleted dealer!'
+        ]);
     }
 }
